@@ -11,6 +11,7 @@ import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import study.rationalegoism.daggerstudy.interfaces.ApplicationContext;
 import timber.log.Timber;
 
 @Module(includes = ContextModule.class)
@@ -42,8 +43,9 @@ public class OkHttpClientModule {
         return httpLoggingInterceptor;
     }
 
+    @ApplicationContext
     @Provides
-    public File file(@Named("application_context") Context context){
+    public File file(@ApplicationContext Context context){
         File file = new File(context.getCacheDir(), "HttpCache");
         file.mkdirs();
         return file;

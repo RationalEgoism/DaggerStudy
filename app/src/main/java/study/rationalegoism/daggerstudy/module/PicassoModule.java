@@ -11,14 +11,16 @@ import javax.inject.Scope;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
+import study.rationalegoism.daggerstudy.interfaces.ApplicationContext;
 import study.rationalegoism.daggerstudy.interfaces.RandomUserApplicationScope;
 
 @Module(includes = OkHttpClientModule.class)
 public class PicassoModule {
 
+    @ApplicationContext
     @RandomUserApplicationScope
     @Provides
-    public Picasso picasso(@Named("application_context") Context context, OkHttp3Downloader okHttp3Downloader){
+    public Picasso picasso(@ApplicationContext Context context, OkHttp3Downloader okHttp3Downloader){
         return new Picasso.Builder(context)
                 .downloader(okHttp3Downloader)
                 .build();
