@@ -2,6 +2,8 @@ package study.rationalegoism.daggerstudy.module;
 
 import android.content.Context;
 
+import javax.inject.Named;
+
 import dagger.Module;
 import dagger.Provides;
 import study.rationalegoism.daggerstudy.interfaces.RandomUserApplicationScope;
@@ -14,6 +16,7 @@ public class ActivityModule {
         this.context = context;
     }
 
+    @Named("activity_context")
     @RandomUserApplicationScope
     @Provides
     public Context context(){
