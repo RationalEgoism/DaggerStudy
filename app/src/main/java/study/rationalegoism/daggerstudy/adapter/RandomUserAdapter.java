@@ -13,11 +13,19 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import study.rationalegoism.daggerstudy.MainActivity;
 import study.rationalegoism.daggerstudy.R;
 import study.rationalegoism.daggerstudy.model.Result;
 
 public class RandomUserAdapter extends RecyclerView.Adapter<RandomUserAdapter.RandomUserViewHolder>{
     private List<Result> resultList = new ArrayList<>();
+    MainActivity mainActivity;
+    Picasso picasso;
+
+    public RandomUserAdapter(MainActivity mainActivity, Picasso picasso) {
+        this.mainActivity = mainActivity;
+        this.picasso = picasso;
+    }
 
     @NonNull
     @Override
@@ -32,7 +40,7 @@ public class RandomUserAdapter extends RecyclerView.Adapter<RandomUserAdapter.Ra
         Result result = resultList.get(position);
         holder.textView.setText(String.format("%s %s", result.getName().getFirst(),
                 result.getName().getLast()));
-        Picasso.with(holder.imageView.getContext())
+        picasso.with(mainActivity)
                 .load(result.getPicture().getLarge())
                 .into(holder.imageView);
     }
