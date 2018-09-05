@@ -1,5 +1,6 @@
 package study.rationalegoism.daggerstudy;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,9 +11,14 @@ import com.google.gson.GsonBuilder;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import study.rationalegoism.daggerstudy.adapter.RandomUserAdapter;
+import study.rationalegoism.daggerstudy.interfaces.RandomUserApi;
+import study.rationalegoism.daggerstudy.model.RandomUsers;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,6 +58,31 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
+        populateUsers();
+
+    }
+
+    private void populateUsers() {
+        Call<RandomUsers> randomUsersCall = getRandomUserService().gerRandomUsers(10);
+        randomUsersCall.enqueue(new Callback<RandomUsers>() {
+            @Override
+            public void onResponse(Call<RandomUsers> call, @NonNull Response<RandomUsers> response) {
+                if(response.isSuccessful()) {
+                    mAdapter = new RandomUserAdapter();
+                    mAdapter.setItems(response.body().getResults());
+                    recyclerView.setAdapter(mAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RandomUsers> call, Throwable t) {
+                Timber.i(t.getMessage());
+            }
+        });
+    }
+
+    private RandomUserApi getRandomUserService() {
+        return retrofit.create(RandomUserApi.class);
     }
 
 
