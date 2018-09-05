@@ -17,7 +17,6 @@ import study.rationalegoism.daggerstudy.interfaces.RandomUserApplicationScope;
 @Module(includes = OkHttpClientModule.class)
 public class PicassoModule {
 
-    @ApplicationContext
     @RandomUserApplicationScope
     @Provides
     public Picasso picasso(@ApplicationContext Context context, OkHttp3Downloader okHttp3Downloader){

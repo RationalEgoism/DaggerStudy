@@ -43,7 +43,6 @@ public class OkHttpClientModule {
         return httpLoggingInterceptor;
     }
 
-    @ApplicationContext
     @Provides
     public File file(@ApplicationContext Context context){
         File file = new File(context.getCacheDir(), "HttpCache");

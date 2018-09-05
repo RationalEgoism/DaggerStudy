@@ -6,7 +6,6 @@ import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
-import study.rationalegoism.daggerstudy.interfaces.ApplicationContext;
 import study.rationalegoism.daggerstudy.interfaces.RandomUserApplicationScope;
 
 @Module
@@ -17,7 +16,7 @@ public class ActivityModule {
         this.context = context;
     }
 
-    @ApplicationContext
+    @Named("activity_context")
     @RandomUserApplicationScope
     @Provides
     public Context context(){
