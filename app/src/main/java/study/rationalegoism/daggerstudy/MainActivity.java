@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
+
+import javax.inject.Inject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,8 +23,12 @@ import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
-    RandomUserApi randomUserApi;
     RecyclerView recyclerView;
+
+    @Inject
+    RandomUserApi randomUserApi;
+
+    @Inject
     RandomUserAdapter mAdapter;
 
     @Override
@@ -39,8 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 .mainActivityModule(new MainActivityModule(this))
                 .randomUserComponent(RandomUserApplication.get(this).getRandomUserApplicationComponent())
                 .build();
-        randomUserApi = component.getRandomUserApi();
-        mAdapter = component.getRandomUserAdapter();
+        component.injectMainActivity(this);
     }
 
     private void populateUsers() {
