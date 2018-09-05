@@ -11,7 +11,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import study.rationalegoism.daggerstudy.interfaces.RandomUserApi;
 
-@Module
+@Module(includes = OkHttpClientModule.class)
 public class RandomUserModule {
 
     @Provides
