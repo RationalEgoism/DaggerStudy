@@ -10,7 +10,9 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import study.rationalegoism.daggerstudy.interfaces.RandomUserApi;
+import study.rationalegoism.daggerstudy.interfaces.RandomUserApplicationScope;
 
+@RandomUserApplicationScope
 @Module(includes = OkHttpClientModule.class)
 public class RandomUserModule {
 
@@ -19,6 +21,7 @@ public class RandomUserModule {
         return retrofit.create(RandomUserApi.class);
     }
 
+    @RandomUserApplicationScope
     @Provides
     public Retrofit retrofit(OkHttpClient okHttpClient, GsonConverterFactory gsonConverterFactory){
         return new Retrofit.Builder()
