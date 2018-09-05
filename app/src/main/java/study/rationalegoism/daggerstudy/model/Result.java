@@ -22,12 +22,6 @@ public class Result {
     @SerializedName("login")
     @Expose
     private Login login;
-    @SerializedName("dob")
-    @Expose
-    private String dob;
-    @SerializedName("registered")
-    @Expose
-    private String registered;
     @SerializedName("phone")
     @Expose
     private String phone;
@@ -84,22 +78,6 @@ public class Result {
         this.login = login;
     }
 
-    public String getDob() {
-        return dob;
-    }
-
-    public void setDob(String dob) {
-        this.dob = dob;
-    }
-
-    public String getRegistered() {
-        return registered;
-    }
-
-    public void setRegistered(String registered) {
-        this.registered = registered;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -148,8 +126,6 @@ public class Result {
                 .append("location", location)
                 .append("email", email)
                 .append("login", login)
-                .append("dob", dob)
-                .append("registered", registered)
                 .append("phone", phone)
                 .append("cell", cell)
                 .append("id", id)
