@@ -42,6 +42,11 @@ public class RandomUserAdapter extends RecyclerView.Adapter<RandomUserAdapter.Ra
         return resultList.size();
     }
 
+    public void setItems(List<Result> results){
+        resultList = results;
+        notifyDataSetChanged();
+    }
+
     public class RandomUserViewHolder extends RecyclerView.ViewHolder{
         public TextView textView;
         public ImageView imageView;
