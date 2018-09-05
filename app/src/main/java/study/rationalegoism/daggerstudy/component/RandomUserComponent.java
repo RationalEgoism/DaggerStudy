@@ -4,8 +4,9 @@ import com.squareup.picasso.Picasso;
 
 import dagger.Component;
 import study.rationalegoism.daggerstudy.interfaces.RandomUserApi;
+import study.rationalegoism.daggerstudy.module.PicassoModule;
 
-@Component
+@Component(modules = {RandomUserApi.class, PicassoModule.class})
 public interface RandomUserComponent {
     RandomUserApi getRandomUserApi();
     Picasso getPicasso();
