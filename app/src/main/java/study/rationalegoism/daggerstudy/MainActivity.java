@@ -22,13 +22,16 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import study.rationalegoism.daggerstudy.adapter.RandomUserAdapter;
+import study.rationalegoism.daggerstudy.component.DaggerRandomUserComponent;
+import study.rationalegoism.daggerstudy.component.RandomUserComponent;
 import study.rationalegoism.daggerstudy.interfaces.RandomUserApi;
 import study.rationalegoism.daggerstudy.model.RandomUsers;
+import study.rationalegoism.daggerstudy.module.ContextModule;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
-    Retrofit retrofit;
+    RandomUserApi randomUserApi;
     RecyclerView recyclerView;
     RandomUserAdapter mAdapter;
 
@@ -40,46 +43,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initViews();
 
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        Gson gson = gsonBuilder.create();
-
         Timber.plant(new Timber.DebugTree());
 
-        File cacheFile = new File(this.getCacheDir(), "HttpCache");
-        cacheFile.mkdirs();
-
-        Cache cache = new Cache(cacheFile, 10 * 1000 * 1000); //10 MB
-
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-            @Override
-            public void log(String message) {
-                Timber.i(message);
-            }
-        });
-
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient okHttpClient = new OkHttpClient()
-                .newBuilder()
-                .cache(cache)
-                .addInterceptor(httpLoggingInterceptor)
+        RandomUserComponent component = DaggerRandomUserComponent.builder()
+                .contextModule(new ContextModule(this))
                 .build();
 
-        OkHttp3Downloader okHttp3Downloader = new OkHttp3Downloader(okHttpClient);
-        picasso = new Picasso.Builder(this).downloader(okHttp3Downloader).build();
-
-        retrofit = new Retrofit.Builder()
-                .client(okHttpClient)
-                .baseUrl("https://randomuser.me/")
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
+        picasso = component.getPicasso();
+        randomUserApi = component.getRandomUserApi();
         populateUsers();
 
     }
 
     private void populateUsers() {
-        Call<RandomUsers> randomUsersCall = getRandomUserService().gerRandomUsers(10);
+        Call<RandomUsers> randomUsersCall = randomUserApi.gerRandomUsers(10);
         randomUsersCall.enqueue(new Callback<RandomUsers>() {
             @Override
             public void onResponse(Call<RandomUsers> call, @NonNull Response<RandomUsers> response) {
@@ -96,11 +73,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    private RandomUserApi getRandomUserService() {
-        return retrofit.create(RandomUserApi.class);
-    }
-
 
     private void initViews() {
         recyclerView = findViewById(R.id.recyclerView);
